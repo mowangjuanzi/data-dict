@@ -24,6 +24,9 @@ PHP生成Markdown版本的数据字典
 3.  提交代码
 4.  新建 Pull Request
 
+#### Next
+
+1. 使用 `symfony/console` 重构
 
 #### 特技
 
