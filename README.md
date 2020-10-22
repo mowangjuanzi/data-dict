@@ -15,7 +15,7 @@ PHP生成Markdown版本的数据字典
 #### 使用说明
 
 1. 首先打开 `index.php` 填写相关配置
-2. 执行 `php index.php > dict.md` 即可
+2. 执行 `php index.php` 即可
 
 #### 参与贡献
 

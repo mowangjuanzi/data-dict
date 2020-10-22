@@ -26,6 +26,11 @@ $username = "";
  */
 $password = "";
 
+$export_file = "";
+
+if (empty($database) || empty($host) || empty($username) || empty($password) || empty($export_file)) {
+    exit("配置项不能为空");
+}
 
 /************ 以下内容请不要进行编辑 ************/
 
@@ -48,25 +53,27 @@ $capsule->setAsGlobal();
 
 $tables = Capsule::table("TABLES")->where("TABLE_SCHEMA", $database)->get();
 
-echo "[TOC]\n\n";
+$str = "[TOC]\n\n";
 
 foreach ($tables as $key => $table) {
-    echo "## ". ($key + 1) .". {$table->TABLE_NAME} {$table->TABLE_COMMENT} \n基本信息 {$table->ENGINE} {$table->TABLE_COLLATION}\n\n";
+    $str .= "## ". ($key + 1) .". {$table->TABLE_NAME} {$table->TABLE_COMMENT} \n基本信息 {$table->ENGINE} {$table->TABLE_COLLATION}\n\n";
 
     // 查询表字段
     $columns = Capsule::table("COLUMNS")->where("TABLE_SCHEMA", $database)->where("TABLE_NAME", $table->TABLE_NAME)->get();
 
-    echo "|序列|列名|类型|可空|默认值|注释|\n|:------:|:------:|:------:|:------:|:------:|:------:|\n";
+    $str .= "|序列|列名|类型|可空|默认值|注释|\n|:------:|:------:|:------:|:------:|:------:|:------:|\n";
     foreach ($columns as $column_key => $column) {
-        echo "|". ($column_key + 1) ."| {$column->COLUMN_NAME} {$column->EXTRA}|{$column->COLUMN_TYPE}|{$column->IS_NULLABLE}|{$column->COLUMN_DEFAULT}|{$column->COLUMN_COMMENT}|\n";
+        $str .= "|". ($column_key + 1) ."| {$column->COLUMN_NAME} {$column->EXTRA}|{$column->COLUMN_TYPE}|{$column->IS_NULLABLE}|{$column->COLUMN_DEFAULT}|{$column->COLUMN_COMMENT}|\n";
     }
 echo "\n";
     // 查询索引
-    $indexs = Capsule::table("STATISTICS")->where("TABLE_SCHEMA", $database)->where("TABLE_NAME", $table->TABLE_NAME)->get();
+    $indexes = Capsule::table("STATISTICS")->where("TABLE_SCHEMA", $database)->where("TABLE_NAME", $table->TABLE_NAME)->get();
 
-    echo "|序列|索引名|类型|包含字段|\n|:------:|:------:|:------:|:------:|\n";
-    foreach ($indexs as $index_key => $index) {
-        echo "|" . ($index_key + 1) . "|{$index->INDEX_NAME}|{$index->INDEX_TYPE}|{$index->COLUMN_NAME}|\n";
+    $str .= "|序列|索引名|类型|包含字段|\n|:------:|:------:|:------:|:------:|\n";
+    foreach ($indexes as $index_key => $index) {
+        $str .= "|" . ($index_key + 1) . "|{$index->INDEX_NAME}|{$index->INDEX_TYPE}|{$index->COLUMN_NAME}|\n";
     }
-echo "\n";
+    $str .= "\n";
 }
+
+file_get_contents($export_file, $str);
