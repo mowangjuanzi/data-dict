@@ -35,7 +35,7 @@ foreach ($tables as $key => $table) {
 
     echo "|序列|列名|类型|可空|默认值|注释|\n|:------:|:------:|:------:|:------:|:------:|:------:|\n";
     foreach ($columns as $column_key => $column) {
-        echo "|". ($column_key + 1) ."| {$column->DATA_TYPE} {$column->EXTRA}|{$column->COLUMN_TYPE}|{$column->IS_NULLABLE}|{$column->COLUMN_DEFAULT}|{$column->COLUMN_COMMENT}|\n";
+        echo "|". ($column_key + 1) ."| {$column->COLUMN_NAME} {$column->EXTRA}|{$column->COLUMN_TYPE}|{$column->IS_NULLABLE}|{$column->COLUMN_DEFAULT}|{$column->COLUMN_COMMENT}|\n";
     }
 echo "\n";
     // 查询索引
