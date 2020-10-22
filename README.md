@@ -4,20 +4,18 @@
 PHP生成Markdown版本的数据字典
 
 #### 软件架构
-软件架构说明
 
+通过读取 `information_schema` 表获取相关信息
 
 #### 安装教程
 
-1.  xxxx
-2.  xxxx
-3.  xxxx
+1. 拉取代码
+2. 执行 `composer install`
 
 #### 使用说明
 
-1.  xxxx
-2.  xxxx
-3.  xxxx
+1. 首先打开 `index.php` 填写相关配置
+2. 执行 `php index.php > dict.md` 即可
 
 #### 参与贡献
 

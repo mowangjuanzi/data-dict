@@ -4,16 +4,39 @@ use Illuminate\Database\Capsule\Manager as Capsule;
 
 require_once __DIR__ . "/vendor/autoload.php";
 
+/************ 可编辑内容开始 ************/
+
+/**
+ * 数据库的名称
+ */
 $database = "";
+
+/**
+ * MySQL 地址
+ */
+$host = "";
+
+/**
+ * 用户名
+ */
+$username = "";
+
+/**
+ * 密码
+ */
+$password = "";
+
+
+/************ 以下内容请不要进行编辑 ************/
 
 $capsule = new Capsule;
 
 $capsule->addConnection([
     'driver'    => 'mysql',
-    'host'      => '',
+    'host'      => $host,
     'database'  => 'information_schema',
-    'username'  => '',
-    'password'  => '',
+    'username'  => $username,
+    'password'  => $password,
     'charset'   => 'utf8mb4',
     'collation' => 'utf8mb4_unicode_ci',
     'prefix'    => '',
