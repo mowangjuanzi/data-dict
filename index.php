@@ -1,79 +1,16 @@
 <?php
 
-use Illuminate\Database\Capsule\Manager as Capsule;
+use App\Commands\DataDictCommand;
+use Symfony\Component\Console\Application;
 
-require_once __DIR__ . "/vendor/autoload.php";
+require __DIR__ . "/vendor/autoload.php";
 
-/************ 可编辑内容开始 ************/
+$application = new Application("Data Dict", "0.1");
 
-/**
- * 数据库的名称
- */
-$database = "";
+$command = new DataDictCommand();
 
-/**
- * MySQL 地址
- */
-$host = "";
+$application->add($command);
 
-/**
- * 用户名
- */
-$username = "";
+$application->setDefaultCommand($command->getName(), true);
 
-/**
- * 密码
- */
-$password = "";
-
-$export_file = "";
-
-if (empty($database) || empty($host) || empty($username) || empty($password) || empty($export_file)) {
-    exit("配置项不能为空");
-}
-
-/************ 以下内容请不要进行编辑 ************/
-
-$capsule = new Capsule;
-
-$capsule->addConnection([
-    'driver'    => 'mysql',
-    'host'      => $host,
-    'database'  => 'information_schema',
-    'username'  => $username,
-    'password'  => $password,
-    'charset'   => 'utf8mb4',
-    'collation' => 'utf8mb4_unicode_ci',
-    'prefix'    => '',
-]);
-
-$capsule->setAsGlobal();
-
-// 查看都是有那些表
-
-$tables = Capsule::table("TABLES")->where("TABLE_SCHEMA", $database)->get();
-
-$str = "[TOC]\n\n";
-
-foreach ($tables as $key => $table) {
-    $str .= "## ". ($key + 1) .". {$table->TABLE_NAME} {$table->TABLE_COMMENT} \n基本信息 {$table->ENGINE} {$table->TABLE_COLLATION}\n\n";
-
-    // 查询表字段
-    $columns = Capsule::table("COLUMNS")->where("TABLE_SCHEMA", $database)->where("TABLE_NAME", $table->TABLE_NAME)->get();
-
-    $str .= "|序列|列名|类型|可空|默认值|注释|\n|:------:|:------:|:------:|:------:|:------:|:------:|\n";
-    foreach ($columns as $column_key => $column) {
-        $str .= "|". ($column_key + 1) ."| {$column->COLUMN_NAME} {$column->EXTRA}|{$column->COLUMN_TYPE}|{$column->IS_NULLABLE}|{$column->COLUMN_DEFAULT}|{$column->COLUMN_COMMENT}|\n";
-    }
-echo "\n";
-    // 查询索引
-    $indexes = Capsule::table("STATISTICS")->where("TABLE_SCHEMA", $database)->where("TABLE_NAME", $table->TABLE_NAME)->get();
-
-    $str .= "|序列|索引名|类型|包含字段|\n|:------:|:------:|:------:|:------:|\n";
-    foreach ($indexes as $index_key => $index) {
-        $str .= "|" . ($index_key + 1) . "|{$index->INDEX_NAME}|{$index->INDEX_TYPE}|{$index->COLUMN_NAME}|\n";
-    }
-    $str .= "\n";
-}
-
-file_get_contents($export_file, $str);
+$application->run();
