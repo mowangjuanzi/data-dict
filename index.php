@@ -5,7 +5,7 @@ use Symfony\Component\Console\Application;
 
 require __DIR__ . "/vendor/autoload.php";
 
-$application = new Application("Data Dict", "0.1");
+$application = new Application("Data Dict", "0.1.1");
 
 $command = new DataDictCommand();
 

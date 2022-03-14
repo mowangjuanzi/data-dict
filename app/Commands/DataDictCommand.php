@@ -25,9 +25,9 @@ class DataDictCommand extends Command
     /**
      * @param InputInterface $input
      * @param OutputInterface $output
-     * @return int|void
+     * @return int
      */
-    public function execute(InputInterface $input, OutputInterface $output)
+    public function execute(InputInterface $input, OutputInterface $output): int
     {
         /** @var QuestionHelper $helper */
         $helper = $this->getHelper("question");
